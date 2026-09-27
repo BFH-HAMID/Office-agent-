@@ -1,0 +1,6 @@
+# OfficeMate's managed documents and local audit/backup data
+/workspace/
+
+# Python
+__pycache__/
+*.py[cod]
