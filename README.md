@@ -1,38 +1,92 @@
-# OfficeMate
+<div align="center">
+  <h1>OfficeMate</h1>
+  <p><strong>Your office, handled.</strong><br>A local-first workspace for documents, spreadsheets, notes, and everyday file tasks.</p>
+  <p>
+    <img src="https://img.shields.io/badge/150-local%20tools-315e48?style=flat-square" alt="150 local tools">
+    <img src="https://img.shields.io/badge/privacy-local--first-5d8b68?style=flat-square" alt="Local first">
+    <img src="https://img.shields.io/badge/dependencies-standard%20library-3776ab?style=flat-square&logo=python&logoColor=white" alt="Python standard library by default">
+    <img src="https://img.shields.io/badge/license-MIT-7b61a8?style=flat-square" alt="MIT license">
+  </p>
+</div>
 
-OfficeMate is a local-first, open-source office assistant for Word, Excel, PowerPoint, CSV, Markdown, and text files. It has no paid API dependency and runs with Python's standard library; native Office support and LibreOffice conversions are enabled when the free optional tools are installed.
+<p align="center">
+  <img src="assets/workspace-illustration.svg" alt="OfficeMate workspace illustration, showing the local-first dashboard and quick actions" width="100%">
+</p>
 
-## Run
+OfficeMate is a free, open-source office assistant for Word, Excel, PowerPoint, PDF, CSV, Markdown, and text files. It runs on your own machine, has no paid API dependency, and keeps managed documents inside a workspace folder. The dashboard, notes, search, and many file and text utilities work with Python's standard library; free optional packages add native Office and PDF support.
+
+## Preview
+
+<p align="center">
+  <img src="assets/workspace-demo.gif" alt="Animated illustration of a local file search in the OfficeMate dashboard" width="800">
+  <br><sub>A small illustrative UI animation—not a screen recording.</sub>
+</p>
+
+## Highlights
+
+- **150 searchable tools** for files, text, CSV, and Office documents.
+- **Local by design:** documents are not uploaded to an external service.
+- **Useful dashboard:** browse and preview files, create notes, search readable content, and start from templates.
+- **Safer file operations:** confirmations for destructive actions, backups before in-place Office edits, a local trash, and an activity log.
+- **Extensible without a service account:** optional features use free Python packages and LibreOffice.
+
+## Get started
 
 ```bash
 python app.py
 ```
 
-Then open http://localhost:8765. By default, OfficeMate manages files inside `./workspace` and keeps snapshots in `./workspace/.backups`, deleted files in the hidden local trash, metadata in a hidden sidecar, and an audit trail at `./workspace/.officemate-audit.jsonl`. Set `OFFICEMATE_WORKSPACE=/path/to/folder` to use another folder. The server binds to `0.0.0.0` for local-network / preview access; it has no authentication, so do not expose it to an untrusted network.
+Open <http://localhost:8765>. To choose a different workspace folder or port:
 
-Optional native Office and PDF support:
+```bash
+OFFICEMATE_WORKSPACE=/path/to/folder OFFICEMATE_PORT=8765 python app.py
+```
+
+The server also honors the `PORT` environment variable. By default, files are managed in `./workspace`; backups, trash, metadata, and the audit trail are stored locally alongside the workspace.
+
+> **Network safety:** OfficeMate binds to `0.0.0.0` for local-network and preview access and has no authentication. Use it only on a trusted network; do not expose it to the public internet.
+
+### Optional Office and PDF support
+
+The app itself runs with Python's standard library. Install the optional Python packages to enable additional document actions:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Install LibreOffice separately to enable document conversion and batch PDF export. Without optional packages, notes, Markdown, CSV processing, file search, and the dashboard work using Python's standard library. OfficeMate does not send documents to an external service.
+Install [LibreOffice](https://www.libreoffice.org/) separately to enable document conversion and batch PDF export. Without the optional packages, the dashboard, notes, Markdown, CSV processing, and file search still work; tools explain when a dependency is missing.
 
-## 150 local tools
+## What you can do
 
-The searchable **150 tools** page includes the original 50 tools plus 100 more, grouped into four categories:
+| Category | Tools | Examples |
+| --- | ---: | --- |
+| **Files** | 33 | Organize, rename, tag, pin, back up, restore, checksum, find duplicates, search content, create ZIPs, and export inventory or activity reports. |
+| **Text** | 43 | Count and summarize text; extract or redact common data; clean, compare, merge, sort, wrap, and transform text or Markdown. |
+| **CSV** | 37 | Inspect, clean, filter, sort, split, merge, reshape, validate, and summarize data; convert CSV to JSON or Markdown. |
+| **Office** | 37 | Create, inspect, extract, merge, and edit Word, Excel, and PowerPoint files; inspect PDFs and convert supported formats. |
 
-- **Files (33):** file and folder management; safe delete-to-trash and backup restore; tagging and pins; audit/inventory exports; SHA-256 checksums and duplicate detection; largest/recent/oldest/empty-file reports; regex content search; ZIP create and safe extract; batch prefix/suffix/extension rename; filename cleanup; UTF-8 normalization; manual backups and snapshot inventory; folder tree and age reports; clear tags.
-- **Text (43):** word, character, line, sentence, paragraph, and keyword counts; reading-time and top-keyword estimates; URL/email/phone/date extraction; email/URL redaction; case conversion; whitespace, punctuation, Unicode, accents, HTML-tag, and newline cleanup; line numbering, sorting, reversing, joining, wrapping, and deduplication; find/replace, compare, merge, HTML conversion, checklist and bullet processing, and a Markdown table of contents.
-- **CSV (37):** row/column and missing-value reports; header normalization; trim, dedupe, fill, filter, search, sort, sample, limit, split, merge, transpose, unpivot, and row numbering; column select/drop/rename/add/split; unique values, value counts, numeric/group summaries, email and structure validation; CSV/JSON/Markdown conversion; summary reports and create-from-text.
-- **Office (37):** create, inspect, extract, merge, and edit Word documents; export Word tables; Excel worksheet previews, CSV exports, search/replace, cleanup, metadata, and formatting; PowerPoint metadata, slide inventory, outline/speaker-note exports, and text replacement; PDF page count, metadata, and text extraction; Office format reports, batch extraction, backups, and PDF conversion.
+The searchable **150 tools** page builds its forms from the registered actions. Changes that rename, clear, delete, or edit existing content require confirmation. Office documents are backed up before in-place edits; most transformations create a separate output file. ZIP extraction blocks path traversal and limits archive size and entry count.
 
-All 100 new actions are registered in the API and appear as searchable cards with dynamically generated file/input forms. Actions that rename, clear, delete, or edit existing content require confirmation. Existing files are backed up before in-place Office edits; most transformations instead write a separate output file. ZIP extraction rejects path traversal and limits archive size/entry count. Activity is recorded in the local audit trail.
+The dashboard also includes meeting and project note templates, an expense CSV template, file previews, a local command bar for file search and extractive summaries, and a file organizer. The command bar is not a connection to a hosted AI service; local-LLM integration is not included.
 
-Some actions depend on optional packages: `python-docx` for Word, `openpyxl` for Excel, `python-pptx` for PowerPoint, `pypdf` for PDF reading, and LibreOffice for format conversion. Tools explain missing dependencies when invoked.
+### Optional dependencies
 
-## Included dashboard capabilities
+`requirements.txt` includes `python-docx` (Word), `openpyxl` (Excel), `python-pptx` (PowerPoint), `pypdf` (PDF reading), and `pandas` (data support). LibreOffice is installed separately for format conversion. Each capability remains optional.
 
-Browse and preview managed files, create/edit text notes, search file names and readable content, use meeting/project/expense templates, convert files with LibreOffice, organize files into type folders, and use the local command bar for file search and extractive summaries. Python packages are optional, and unavailable capabilities explain which free package is required.
+## Where your data lives
+
+- **Workspace files:** `./workspace` (or the directory set with `OFFICEMATE_WORKSPACE`).
+- **Backups:** `./workspace/.backups`.
+- **Deleted files:** local hidden trash inside the workspace.
+- **Metadata:** a hidden workspace sidecar file.
+- **Audit trail:** `./workspace/.officemate-audit.jsonl`.
+
+OfficeMate does not send documents to an external service. Since the server has no login or authentication, keep it on a trusted machine/network and protect access to the workspace itself.
+
+## Current scope
 
 OfficeMate is an extensible local-first foundation. Voice input, scheduled reports, and local-LLM integration are not included yet.
+
+## License
+
+[MIT](LICENSE)
